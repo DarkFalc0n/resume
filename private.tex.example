@@ -1,0 +1,3 @@
+% Copy this file to private.tex and update with your actual contact details.
+\newcommand{\myEmail}{your.email@example.com}
+\newcommand{\myMobile}{+00-0000000000}

@@ -1,0 +1,184 @@
+%------------------------
+% Resume Template
+% Author : Pratyay Roy
+% Github : https://github.com/darkfalc0n
+% License : MIT
+%------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+\linespread{0.9}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.530in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.45in}
+\addtolength{\textheight}{1in}
+
+\urlstyle{rm}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Global list spacing configuration
+\setlist[itemize]{leftmargin=*, noitemsep, topsep=0pt, parsep=0pt, partopsep=0pt}
+
+% Sections formatting
+\titleformat{\section}{
+  \scshape\raggedright\Large
+}{}{0em}{}[\color{black}\titlerule]
+\titlespacing*{\section}{0pt}{1pt}{6pt}
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item{\large\textbf{#1}}
+}
+
+\newcommand{\resumeItemWithoutTitle}[1]{
+  \item #1
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      \large\textbf{#1} & #2 \\
+      \textit{#3} & \textit{#4} \\
+    \end{tabular*}
+}
+
+\newcommand{\listitem}[1]{
+  \item #1
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}}
+
+\newcommand{\resumeProject}[3]{
+  \item
+    \large\textbf{#1} $|$ \small\textit{#2} $|$ #3
+}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}[1][]{\begin{itemize}[leftmargin=0pt, label={}, #1]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+%----------PRIVATE DETAILS LOAD-------------
+\IfFileExists{private.tex}{%
+  \input{private.tex}%
+}{%
+  \providecommand{\myEmail}{your.email@example.com}%
+  \providecommand{\myMobile}{+00-0000000000}%
+}
+
+\begin{document}
+
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \LARGE\textbf{Pratyay Roy} & Email: \href{mailto:\myEmail}{\myEmail} \\
+  Mobile:~~~\myMobile & Github: \href{https://github.com/darkfalc0n}{github.com/darkfalc0n} \\
+  LinkedIn: \href{https://www.linkedin.com/in/pratyayroy}{linkedin.com/in/pratyayroy} & Leetcode: \href{https://leetcode.com/u/DarkFalc0n}{leetcode.com/u/DarkFalc0n}
+\end{tabular*}
+
+%-----------EDUCATION-----------------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Jalpaiguri Government Engineering College (Autonomous)}{Jalpaiguri, WB, India}
+    {Bachelor of Technology - Information Technology;  GPA: 8.63}{July 2021 - June 2025}
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------------
+\section{Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading{WTW (Willis Towers Watson)}{Kolkata, WB, India}
+    {Analyst - Software Engineer}{Jun 2025 - Present}
+  \resumeItemListStart
+    \resumeItemWithoutTitle{Developing an in-house \textbf{Knowledge-Based Authentication} component using \textbf{React} that secures \textbf{Genesys Cloud} calls while exposing zero PII to agents.}
+    \resumeItemWithoutTitle{Developed a data aggregator and an engine in \textbf{.NET Core} that produces randomized questions from \textbf{20+} internal data sources while supporting \textbf{250+} insurance carriers.}
+    \resumeItemWithoutTitle{Developed a reusable web component to dynamically load compliance templates and seamlessly process user consent. Paired with a dedicated database architecture, it stores consent states in a single domain and improves data tracking efficiency across \textbf{10+} micro-frontends.}
+  \resumeItemListEnd
+  \resumeSubheading{KoinX}{Remote, India}
+    {Frontend Developer Intern}{Jan 2025 - May 2025}
+  \resumeItemListStart
+    \resumeItemWithoutTitle{Developed \textbf{2 major modules} from scratch for the \textbf{KoinXBooks - Accounting} platform using \textbf{Next.js}.}
+    \resumeItemWithoutTitle{Migrated the \textbf{Transactions page} from \textbf{Redux Toolkit} to \textbf{React Query} and caching transactions for \textbf{500+ wallets} client-side, effectively reducing API calls and database reads by over \textbf{30\%}.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Dualite}{Remote, India}
+    {Software Development Intern}{July 2023 - Nov 2023}
+  \resumeItemListStart
+    \resumeItemWithoutTitle{Implemented \textbf{Object Oriented Architecture} using \textbf{Typescript} in the \textbf{Figma} plugin core, that resulted in \textbf{250\% increase} in release cycle speed and \textbf{50\%} decrease in monthly bug report volume.}
+    \resumeItemWithoutTitle{Rewrote the plugin \textbf{core algorithm} utilising \textbf{dynamic tree caching} to increase conversion throughput by \textbf{500\%} and also enable the plugin to process multiple design frames concurrently.}
+    \resumeItemWithoutTitle{Added \textbf{React} support to the code output to grow \textbf{AMU by over 300\%} (from 5,000 to 20,000+), and added \textbf{Mixpanel} triggers project-wide to capture \textbf{200,000+} events monthly.}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------------
+\section{Projects}
+\resumeSubHeadingListStart
+
+\resumeProject{React Bits (Open Source Contributor)}{ReactJs, ShadCN, Tailwind, Typescript}{\href{https://github.com/DavidHDev/react-bits/pulls?q=is\%3Apr+is\%3Amerged+author\%3Adarkfalc0n}{\underline{Github}}}
+    \resumeItemListStart
+      \resumeItemWithoutTitle{Actively contributing features and bug fixes to the React Bits Repository}
+    \resumeItemListEnd
+  \resumeProject{Risk Exposure Tracker}{ASP.Net, React, Tailwind, Azure SQL, MS Azure}{\href{https://github.com/DarkFalc0n/RiskExposureTracker}{\underline{Github}}}
+    \resumeItemListStart
+      \resumeItemWithoutTitle{Full stack application with dashboard for Organisations to track risks and manage mitigations}
+      \resumeItemWithoutTitle{Github Actions to build and deploy the API and SPA to Azure Web Apps.}
+    \resumeItemListEnd
+
+  \resumeProject{Rezume}{Bun, Typescript}{\href{https://github.com/DarkFalc0n/rezume}{\underline{Github}}}
+    \resumeItemListStart
+      \resumeItemWithoutTitle{Bun command-line-interface to generate LaTeX resume from .json data, can be smoothly integrated with live backend.}
+    \resumeItemListEnd
+
+  
+\resumeSubHeadingListEnd
+
+%-----------SKILLS-----------------
+\section{Skills Summary}
+\resumeSubHeadingListStart
+  \resumeSubItem{Languages:}{~C++, C\#, Golang, Typescript, Javascript, Bash, SQL, Java, Python, Dart, Lua}
+  \resumeSubItem{Frameworks:}{~NodeJS, Bun, .NET, React, ExpressJs, React Native, Next.js, MySQL}
+  \resumeSubItem{Developer Tools:}{~Git, Docker, Redis, Kafka, Nginx}
+  \resumeSubItem{Platforms:}{~Linux (Ubuntu, Arch), Azure, Github, Web, Windows, AWS}
+\resumeSubHeadingListEnd
+
+%-----------AWARDS-----------------
+\section{Achievements}
+\begin{itemize}                                 
+  \item Selected at \textbf{Google Summer of Code 2024} as a contributor to \textbf{Joplin}. My proposal on developing an inbuilt plugin resource monitor was accepted as \textbf{top 1200} out of 9107+ participants across projects.
+  \item \textbf{Won the Smart India Hackathon 2022} and secured \textbf{1st place} in Archaeological Gamification category and was among \textbf{top 400} out of 30000+ teams. Also, was a \textbf{finalist} in the 2023 edition.
+  \item \textbf{Finalist at UNESCO India-Africa Hackathon 2022}, selected in \textbf{top 220} out of 7800+ candidates in an international hackathon with students from \textbf{22+ countries.}
+  \item \textbf{1st Runner's Up at Hack4Bengal 3.0} among \textbf{220+} participating teams across West Bengal.
+  \item Secured \textbf{2523 rank} out of 31300+ participants at \textbf{Leetcode Weekly Contest 503}.
+\end{itemize}
+
+%-----------CERTIFICATES-----------------
+\section{Certifications and Licenses}
+\resumeSubHeadingListStart
+  \resumeSubheading{\href{https://learn.microsoft.com/api/credentials/share/en-us/PratyayRoy-9687/72A021F69BA9D3EF?sharingId=B373B0AF956B442F}{AZ-900 Microsoft Certified: Azure Fundamentals}}{\textit{April 2026}}{Microsoft Cert No: \normalfont{8B4D7D-5D14BB}}{}
+\resumeSubHeadingListEnd
+
+\end{document}
