@@ -35,9 +35,18 @@ jobs:
         with:
           root_file: main.tex
 
-      - name: Rename PDF output
+      - name: Password Protect PDF (if secret set)
+        env:
+          PDF_PASSWORD: ${{ secrets.PDF_PASSWORD }}
         run: |
-          mv main.pdf PratyayRoyResume.pdf
+          sudo apt-get update && sudo apt-get install -y qpdf
+          if [ -n "$PDF_PASSWORD" ]; then
+            qpdf --encrypt "$PDF_PASSWORD" "$PDF_PASSWORD" 256 -- main.pdf PratyayRoyResume.pdf
+            echo "Successfully encrypted PDF with 256-bit AES."
+          else
+            echo "No PDF_PASSWORD secret found. Saving unencrypted PDF."
+            mv main.pdf PratyayRoyResume.pdf
+          fi
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
@@ -45,11 +54,10 @@ jobs:
           name: PratyayRoyResume-PDF
           path: PratyayRoyResume.pdf
 
-      - name: Create Release (on Tag or Manual Run)
-        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: PratyayRoyResume-${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'PratyayRoyResume-latest' }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
           files: PratyayRoyResume.pdf
           generate_release_notes: true
