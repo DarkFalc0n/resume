@@ -30,6 +30,10 @@ jobs:
             echo "No PRIVATE_TEX secret detected. Building with default placeholders."
           fi
 
+      - name: Set Release Date
+        run: |
+          echo "DATE=$(date +'%y%m%d-%H%M%S')" >> $GITHUB_ENV
+
       - name: Compile LaTeX Resume
         uses: xu-cheng/latex-action@v3
         with:
@@ -40,24 +44,25 @@ jobs:
           PDF_PASSWORD: ${{ secrets.PDF_PASSWORD }}
         run: |
           sudo apt-get update && sudo apt-get install -y qpdf
+          OUTPUT_NAME="PratyayRoyResume_${DATE}.pdf"
           if [ -n "$PDF_PASSWORD" ]; then
-            qpdf --encrypt "$PDF_PASSWORD" "$PDF_PASSWORD" 256 -- main.pdf PratyayRoyResume.pdf
-            echo "Successfully encrypted PDF with 256-bit AES."
+            qpdf --encrypt "$PDF_PASSWORD" "$PDF_PASSWORD" 256 -- main.pdf "$OUTPUT_NAME"
+            echo "Successfully encrypted PDF with 256-bit AES as $OUTPUT_NAME."
           else
-            echo "No PDF_PASSWORD secret found. Saving unencrypted PDF."
-            mv main.pdf PratyayRoyResume.pdf
+            echo "No PDF_PASSWORD secret found. Saving unencrypted PDF as $OUTPUT_NAME."
+            mv main.pdf "$OUTPUT_NAME"
           fi
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PratyayRoyResume-PDF
-          path: PratyayRoyResume.pdf
+          name: PratyayRoyResume-${{ env.DATE }}
+          path: PratyayRoyResume_${{ env.DATE }}.pdf
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'PratyayRoyResume-latest' }}
-          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
-          files: PratyayRoyResume.pdf
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('PratyayRoyResume-{0}', env.DATE) }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}', env.DATE) }}
+          files: PratyayRoyResume_${{ env.DATE }}.pdf
           generate_release_notes: true
