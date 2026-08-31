@@ -36,55 +36,8 @@ jobs:
 
       - name: Compile LaTeX Resume (n PDFs)
         run: |
-          if [ ! -f private.tex ]; then
-            echo "\\providecommand{\\resumecount}{1}" > private.tex
-            echo "\\providecommand{\\myEmailOne}{your.email@example.com}" >> private.tex
-            echo "\\providecommand{\\myMobile}{+00-0000000000}" >> private.tex
-          fi
-          cp private.tex private.tex.bak
-          RESUMECOUNT=$(python3 -c "
-import re, sys
-content = open('private.tex.bak').read()
-m = re.search(r'resumecount.*?(\d+)', content)
-print(m.group(1) if m else '1')
-")
           sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-fonts-recommended
-          mkdir -p dist
-          for i in $(seq 1 $RESUMECOUNT); do
-            SUFFIX=$(python3 -c "print(['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'][$i])")
-            EMAIL=$(python3 -c "
-import re
-content = open('private.tex.bak').read()
-m = re.search(r'myEmail${SUFFIX}.*?\{([^}]+)\}', content)
-print(m.group(1) if m else '')
-")
-            if [ -z "$EMAIL" ]; then
-              echo "ERROR: myEmail${SUFFIX} not found in private.tex"
-              cat private.tex.bak
-              exit 1
-            fi
-            MOBILE=$(python3 -c "
-import re
-content = open('private.tex.bak').read()
-m = re.search(r'myMobile.*?\{([^}]+)\}', content)
-print(m.group(1) if m else '+00-0000000000')
-")
-            printf "\\providecommand{\\myEmail}{%s}\n" "$EMAIL" > private.tex
-            printf "\\providecommand{\\myMobile}{%s}\n" "$MOBILE" >> private.tex
-            printf "\\providecommand{\\resumecount}{%s}\n" "$RESUMECOUNT" >> private.tex
-            pdflatex -interaction=nonstopmode main.tex
-            if [ $? -ne 0 ]; then
-              echo "ERROR: pdflatex failed for myEmail${SUFFIX}"
-              exit 1
-            fi
-            pdflatex -interaction=nonstopmode main.tex
-            OUTPUT_NAME=$(python3 -c "print('${EMAIL}'.split('@')[0] + '_${DATE}')")
-            mv main.pdf "${OUTPUT_NAME}.pdf"
-            mv "${OUTPUT_NAME}.pdf" dist/
-            rm -f main.aux main.log main.out
-          done
-          mv private.tex.bak private.tex
-          echo "Successfully generated ${RESUMECOUNT} PDFs."
+          python3 scripts/build.py
 
       - name: Upload PDF Artifacts
         uses: actions/upload-artifact@v4
