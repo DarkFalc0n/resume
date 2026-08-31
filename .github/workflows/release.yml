@@ -34,25 +34,46 @@ jobs:
         run: |
           echo "DATE=$(date +'%y%m%d-%H%M%S')" >> $GITHUB_ENV
 
-      - name: Compile LaTeX Resume
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: main.tex
-
-      - name: Rename PDF
+      - name: Compile LaTeX Resume (n PDFs)
         run: |
-          mv main.pdf "PratyayRoyResume_${DATE}.pdf"
+          if [ -n "${{ secrets.PRIVATE_TEX }}" ]; then
+            echo "${{ secrets.PRIVATE_TEX }}" > private.tex
+          fi
+          cp private.tex private.tex.bak
+          RESUMECOUNT=$(python3 -c "import re; m=re.search(r'providecommand.*resumecount.*\{(\d+)\}', open('private.tex.bak').read()); print(m.group(1) if m else 1)")
+          [ -z "$RESUMECOUNT" ] && RESUMECOUNT=1
+          sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-fonts-recommended
+          mkdir -p dist
+          for i in $(seq 1 $RESUMECOUNT); do
+            SUFFIX=$(python3 -c "print(['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'][$i])")
+            EMAIL=$(python3 -c "import re; m=re.search(r'providecommand.*myEmail${SUFFIX}.*\{([^}]*)\}', open('private.tex.bak').read()); print(m.group(1) if m else '')")
+            if [ -z "$EMAIL" ]; then
+              echo "Email myEmail${SUFFIX} not found in private.tex"
+              exit 1
+            fi
+            MOBILE=$(python3 -c "import re; m=re.search(r'providecommand.*myMobile.*\{([^}]*)\}', open('private.tex.bak').read()); print(m.group(1) if m else '')")
+            printf "\\providecommand{\\myEmail}{%s}\n" "$EMAIL" > private.tex
+            printf "\\providecommand{\\myMobile}{%s}\n" "$MOBILE" >> private.tex
+            printf "\\providecommand{\\resumecount}{%s}\n" "$RESUMECOUNT" >> private.tex
+            pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
+            pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
+            OUTPUT_NAME="PratyayRoyResume_${DATE}-${i}"
+            mv main.pdf "${OUTPUT_NAME}.pdf"
+            mv "${OUTPUT_NAME}.pdf" dist/
+          done
+          mv private.tex.bak private.tex
+          echo "Successfully generated ${RESUMECOUNT} PDFs."
 
-      - name: Upload PDF Artifact
+      - name: Upload PDF Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: PratyayRoyResume-${{ env.DATE }}
-          path: PratyayRoyResume_${{ env.DATE }}.pdf
+          path: dist/PratyayRoyResume_${{ env.DATE }}-*.pdf
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('PratyayRoyResume-{0}', env.DATE) }}
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}', env.DATE) }}
-          files: PratyayRoyResume_${{ env.DATE }}.pdf
+          files: dist/PratyayRoyResume_${{ env.DATE }}-*.pdf
           generate_release_notes: true

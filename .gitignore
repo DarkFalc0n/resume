@@ -1,5 +1,9 @@
 # Private / Sensitive Details
 private.tex
+private.tex.bak
+
+# Build Artifacts
+dist/
 
 # LaTeX Build Artifacts
 *.aux
