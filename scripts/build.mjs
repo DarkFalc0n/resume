@@ -60,8 +60,10 @@ for (let i = 0; i < emails.length; i++) {
 
   try {
     run("pdflatex -interaction=nonstopmode main.tex");
-  } catch {
+  } catch (e) {
     console.error(`ERROR: pdflatex failed for ${email}`);
+    console.error(e.stdout?.toString().slice(-3000) ?? "");
+    console.error(e.stderr?.toString().slice(-3000) ?? "");
     process.exit(1);
   }
 
