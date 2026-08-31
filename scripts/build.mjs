@@ -27,7 +27,7 @@ function parsePrivateTex(content) {
 
 function writePrivateTex(path, email, mobile, count) {
   writeFileSync(path,
-    `\\providecommand{\\myEmail}{${email}}\n` +
+    `\\providecommand{\\myEmailOne}{${email}}\n` +
     `\\providecommand{\\myMobile}{${mobile}}\n` +
     `\\providecommand{\\resumecount}{${count}}\n`
   );
