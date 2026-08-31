@@ -39,19 +39,9 @@ jobs:
         with:
           root_file: main.tex
 
-      - name: Password Protect PDF (if secret set)
-        env:
-          PDF_PASSWORD: ${{ secrets.PDF_PASSWORD }}
+      - name: Rename PDF
         run: |
-          sudo apt-get update && sudo apt-get install -y qpdf
-          OUTPUT_NAME="PratyayRoyResume_${DATE}.pdf"
-          if [ -n "$PDF_PASSWORD" ]; then
-            qpdf --encrypt "$PDF_PASSWORD" "$PDF_PASSWORD" 256 -- main.pdf "$OUTPUT_NAME"
-            echo "Successfully encrypted PDF with 256-bit AES as $OUTPUT_NAME."
-          else
-            echo "No PDF_PASSWORD secret found. Saving unencrypted PDF as $OUTPUT_NAME."
-            mv main.pdf "$OUTPUT_NAME"
-          fi
+          mv main.pdf "PratyayRoyResume_${DATE}.pdf"
 
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
