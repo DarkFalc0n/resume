@@ -7,7 +7,7 @@ const SUFFIXES = [
 ];
 
 function parsePrivateTex(content) {
-  const count = parseInt(content.match(/resumecount.*?\{(\d+)\}/)?.[1] ?? "1");
+  const count = parseInt(content.match(/resumecount.*?\{(\d+)\}/)?.[1] ?? "0");
 
   const emails = [];
   for (let i = 1; i <= count; i++) {
@@ -25,11 +25,10 @@ function parsePrivateTex(content) {
   return { count, emails, mobile };
 }
 
-function writePrivateTex(path, email, mobile, count) {
+function writePrivateTex(path, email, mobile) {
   writeFileSync(path,
     `\\providecommand{\\myEmail}{${email}}\n` +
-    `\\providecommand{\\myMobile}{${mobile}}\n` +
-    `\\providecommand{\\resumecount}{${count}}\n`
+    `\\providecommand{\\myMobile}{${mobile}}\n`
   );
 }
 
@@ -44,18 +43,18 @@ const dist = "dist";
 if (!existsSync(privateTex)) {
   writeFileSync(privateTex,
     `\\providecommand{\\resumecount}{1}\n` +
-    `\\providecommand{\\myEmail}{your.email@example.com}\n` +
+    `\\providecommand{\\myEmailOne}{your.email@example.com}\n` +
     `\\providecommand{\\myMobile}{+00-0000000000}\n`
   );
 }
 
 writeFileSync(backup, readFileSync(privateTex));
-const { count, emails, mobile } = parsePrivateTex(readFileSync(backup, "utf8"));
+const { emails, mobile } = parsePrivateTex(readFileSync(backup, "utf8"));
 mkdirSync(dist, { recursive: true });
 
 for (let i = 0; i < emails.length; i++) {
   const email = emails[i];
-  writePrivateTex(privateTex, email, mobile, count);
+  writePrivateTex(privateTex, email, mobile);
 
   try {
     run("pdflatex -interaction=nonstopmode main.tex");
