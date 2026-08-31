@@ -27,7 +27,7 @@ function parsePrivateTex(content) {
 
 function writePrivateTex(path, email, mobile, count) {
   writeFileSync(path,
-    `\\providecommand{\\myEmailOne}{${email}}\n` +
+    `\\providecommand{\\myEmail}{${email}}\n` +
     `\\providecommand{\\myMobile}{${mobile}}\n` +
     `\\providecommand{\\resumecount}{${count}}\n`
   );
@@ -37,7 +37,6 @@ function run(cmd) {
   return execSync(cmd, { stdio: "pipe" });
 }
 
-const date = process.env.DATE || "dev";
 const privateTex = "private.tex";
 const backup = "private.tex.bak";
 const dist = "dist";
@@ -45,7 +44,7 @@ const dist = "dist";
 if (!existsSync(privateTex)) {
   writeFileSync(privateTex,
     `\\providecommand{\\resumecount}{1}\n` +
-    `\\providecommand{\\myEmailOne}{your.email@example.com}\n` +
+    `\\providecommand{\\myEmail}{your.email@example.com}\n` +
     `\\providecommand{\\myMobile}{+00-0000000000}\n`
   );
 }
@@ -70,7 +69,7 @@ for (let i = 0; i < emails.length; i++) {
   run("pdflatex -interaction=nonstopmode main.tex");
 
   const emailPrefix = email.split("@")[0];
-  const outputName = `${emailPrefix}_${date}.pdf`;
+  const outputName = `${emailPrefix}.pdf`;
   renameSync("main.pdf", `${dist}/${outputName}`);
 
   for (const f of ["main.aux", "main.log", "main.out"]) {
