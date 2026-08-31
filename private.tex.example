@@ -1,3 +1,5 @@
-% Copy this file to private.tex and update with your actual contact details.
-\newcommand{\myEmail}{your.email@example.com}
-\newcommand{\myMobile}{+00-0000000000}
+\providecommand{\resumecount}{3}
+\providecommand{\myEmailOne}{email1@example.com}
+\providecommand{\myEmailTwo}{email2@example.com}
+\providecommand{\myEmailThree}{email3@example.com}
+\providecommand{\myMobile}{+00-0000000000}
