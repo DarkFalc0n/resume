@@ -57,7 +57,7 @@ jobs:
             printf "\\providecommand{\\resumecount}{%s}\n" "$RESUMECOUNT" >> private.tex
             pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
             pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
-            OUTPUT_NAME="PratyayRoyResume_${DATE}-${i}"
+            OUTPUT_NAME=$(python3 -c "print('${EMAIL}'.split('@')[0] + '_${DATE}')")
             mv main.pdf "${OUTPUT_NAME}.pdf"
             mv "${OUTPUT_NAME}.pdf" dist/
           done
@@ -68,12 +68,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PratyayRoyResume-${{ env.DATE }}
-          path: dist/PratyayRoyResume_${{ env.DATE }}-*.pdf
+          path: dist/*.pdf
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('PratyayRoyResume-{0}', env.DATE) }}
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}', env.DATE) }}
-          files: dist/PratyayRoyResume_${{ env.DATE }}-*.pdf
+          files: dist/*.pdf
           generate_release_notes: true
