@@ -1,0 +1,10 @@
+name = "latest-resume-redirect"
+main = "workers/redirect.js"
+compatibility_date = "2026-09-01"
+
+routes = [
+    { pattern = "resume.pratyay.dev", custom_domain = true }
+]
+
+[observability]
+enabled = true

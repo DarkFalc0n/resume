@@ -5,6 +5,13 @@ private.tex.bak
 # Build Artifacts
 dist/
 
+# Dependencies / Worker Tooling
+node_modules/
+.pnpm-store/
+.wrangler/
+pnpm-debug.log*
+
+
 # LaTeX Build Artifacts
 *.aux
 *.fdb_latexmk
